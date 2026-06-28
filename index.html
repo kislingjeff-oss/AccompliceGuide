@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Accomplice, not ally</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&family=Playfair+Display:ital,wght@0,700;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.19.0/dist/tabler-icons.min.css">
+<style>
+  :root {
+    --teal: #3d5a4f;
+    --teal-light: #eef6f2;
+    --teal-mid: #c8e4d8;
+    --teal-text: #2a5240;
+    --peach-light: #fef4ee;
+    --blue-light: #eef3fa;
+    --lavender: #f3f0fa;
+    --lavender-text: #3a2a6a;
+    --body-bg: #f5f3ef;
+    --card-bg: #ffffff;
+    --text-primary: #1a1a1a;
+    --text-secondary: #555;
+    --text-muted: #888;
+    --border: rgba(0,0,0,0.09);
+    --border-strong: rgba(0,0,0,0.16);
+    --radius: 12px;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--body-bg); color: var(--text-primary); font-family: 'Nunito', system-ui, sans-serif; line-height: 1.6; }
+
+  .page-header { background: var(--teal); color: #fff; padding: 52px 40px 44px; text-align: center; }
+  .header-kicker { font-size: 13px; font-weight: 800; letter-spacing: 0.18em; text-transform: uppercase; color: #a8c8be; margin-bottom: 14px; }
+  .page-header h1 { font-family: 'Playfair Display', serif; font-size: 46px; font-weight: 700; line-height: 1.18; color: #fff; margin-bottom: 16px; }
+  .header-sub { font-size: 18px; color: #c8ddd8; max-width: 500px; margin: 0 auto; line-height: 1.65; }
+
+  .nav-tabs { display: flex; background: #314a41; overflow-x: auto; }
+  .nav-tab { flex: 1; padding: 14px 12px; background: none; border: none; border-bottom: 3px solid transparent; color: rgba(255,255,255,0.6); font-family: 'Nunito', sans-serif; font-size: 14px; font-weight: 700; cursor: pointer; white-space: nowrap; text-align: center; transition: color 0.15s, border-color 0.15s; }
+  .nav-tab:hover { color: #fff; }
+  .nav-tab.active { color: #fff; border-bottom-color: #a8c8be; }
+
+  .section { display: none; max-width: 720px; margin: 0 auto; padding: 36px 28px 56px; }
+  .section.active { display: block; }
+
+  .section-intro { font-size: 17px; color: var(--text-secondary); line-height: 1.75; margin-bottom: 28px; padding: 20px 24px; background: var(--card-bg); border-radius: var(--radius); border: 1px solid var(--border); border-left: 4px solid var(--teal); }
+
+  .accordion { display: flex; flex-direction: column; gap: 10px; }
+  .acc-item { background: var(--card-bg); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; }
+  .acc-trigger { width: 100%; background: none; border: none; padding: 18px 20px; display: flex; align-items: center; gap: 14px; cursor: pointer; text-align: left; font-family: 'Nunito', sans-serif; transition: background 0.12s; }
+  .acc-trigger:hover { background: var(--body-bg); }
+  .acc-num { width: 34px; height: 34px; border-radius: 50%; background: var(--teal-light); color: var(--teal); font-size: 15px; font-weight: 800; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .acc-label { font-size: 17px; font-weight: 700; color: var(--text-primary); flex: 1; line-height: 1.3; }
+  .acc-chevron { font-size: 18px; color: var(--text-muted); transition: transform 0.2s; flex-shrink: 0; }
+  .acc-item.open .acc-chevron { transform: rotate(180deg); }
+  .acc-body { display: none; padding: 2px 20px 22px 68px; font-size: 16px; color: var(--text-secondary); line-height: 1.72; }
+  .acc-item.open .acc-body { display: block; }
+  .acc-body p + p { margin-top: 10px; }
+  .acc-example { margin-top: 14px; padding: 14px 18px; background: var(--teal-light); border-radius: 8px; font-size: 15px; color: var(--teal-text); font-style: italic; line-height: 1.6; }
+
+  .card-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .card { background: var(--card-bg); border: 1px solid var(--border); border-radius: var(--radius); padding: 22px 20px; }
+  .card-icon { font-size: 26px; color: var(--teal); margin-bottom: 10px; display: block; }
+  .card h3 { font-size: 16px; font-weight: 700; color: var(--text-primary); margin-bottom: 7px; }
+  .card p { font-size: 15px; color: var(--text-secondary); line-height: 1.65; }
+  .card a { display: inline-flex; align-items: center; gap: 4px; margin-top: 10px; font-size: 14px; font-weight: 700; color: var(--teal); text-decoration: none; }
+  .card a:hover { text-decoration: underline; }
+
+  .callout { margin-top: 28px; padding: 20px 24px; background: var(--teal-light); border-radius: var(--radius); border-left: 4px solid var(--teal); font-size: 16px; color: var(--teal-text); line-height: 1.72; }
+
+  .section-h2 { font-family: 'Playfair Display', serif; font-size: 22px; font-weight: 700; color: var(--text-primary); margin: 28px 0 16px; }
+  .section-h2:first-of-type { margin-top: 0; }
+
+  .ref-list { display: flex; flex-direction: column; gap: 12px; }
+  .ref-item { background: var(--card-bg); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; }
+  .ref-trigger { width: 100%; background: none; border: none; padding: 18px 20px; display: flex; align-items: flex-start; gap: 14px; cursor: pointer; text-align: left; font-family: 'Nunito', sans-serif; transition: background 0.12s; }
+  .ref-trigger:hover { background: var(--body-bg); }
+  .ref-icon { width: 34px; height: 34px; border-radius: 50%; background: var(--lavender); color: var(--lavender-text); font-size: 17px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 1px; }
+  .ref-q { font-size: 17px; font-weight: 700; color: var(--lavender-text); font-style: italic; flex: 1; line-height: 1.45; }
+  .ref-chevron { font-size: 18px; color: var(--text-muted); transition: transform 0.2s; flex-shrink: 0; margin-top: 4px; }
+  .ref-item.open .ref-chevron { transform: rotate(180deg); }
+  .ref-body { display: none; padding: 2px 20px 22px 68px; font-size: 16px; color: var(--text-secondary); line-height: 1.72; }
+  .ref-item.open .ref-body { display: block; }
+  .ref-body p + p { margin-top: 10px; }
+
+  .page-footer { background: var(--teal); color: #a8c8be; text-align: center; padding: 26px 32px; font-size: 14px; font-weight: 600; letter-spacing: 0.04em; }
+  .page-footer a { color: #c8ddd8; text-decoration: none; }
+  .page-footer a:hover { text-decoration: underline; }
+
+  @media (max-width: 520px) {
+    .card-grid { grid-template-columns: 1fr; }
+    .page-header h1 { font-size: 34px; }
+    .acc-body, .ref-body { padding-left: 20px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="page-header">
+  <div class="header-kicker">A guide for non-Native people</div>
+  <h1>Accomplice,<br>not ally</h1>
+  <p class="header-sub">How to show up for Indigenous-led work without becoming a burden to the people building it.</p>
+</div>
+
+<div class="nav-tabs">
+  <button class="nav-tab active" onclick="showTab('tension', this)">The tension</button>
+  <button class="nav-tab" onclick="showTab('principles', this)">Five principles</button>
+  <button class="nav-tab" onclick="showTab('start', this)">Where to start</button>
+  <button class="nav-tab" onclick="showTab('reflect', this)">Reflection</button>
+</div>
+
+<!-- TAB 1 -->
+<div class="section active" id="tab-tension">
+  <div class="section-intro">You want to help. You don't want to become another burden to the people you're trying to support. That tension is real — and it has real answers.</div>
+  <div class="accordion">
+
+    <div class="acc-item open">
+      <button class="acc-trigger" onclick="toggleAcc(this)">
+        <span class="acc-num">1</span>
+        <span class="acc-label">The difference between ally and accomplice</span>
+        <i class="ti ti-chevron-down acc-chevron" aria-hidden="true"></i>
+      </button>
+      <div class="acc-body">
+        <p>An ally supports a cause from relative safety — signs petitions, attends events, amplifies voices. This matters. It is not enough.</p>
+        <p>An accomplice participates in the work itself: physically present, taking direction from Indigenous leadership, sharing some of the risk, staying for the long haul. The word comes from the legal tradition — an accomplice is in the room where it happens, not someone who approved from a distance.</p>
+        <div class="acc-example">The change is in the posture: from "I support what you're doing" to "what do you need me to do?"</div>
+      </div>
+    </div>
+
+    <div class="acc-item">
+      <button class="acc-trigger" onclick="toggleAcc(this)">
+        <span class="acc-num">2</span>
+        <span class="acc-label">Why sustained relationship is the mechanism, not the reward</span>
+        <i class="ti ti-chevron-down acc-chevron" aria-hidden="true"></i>
+      </button>
+      <div class="acc-body">
+        <p>The gap in non-Native understanding of Indigenous history was created by distance — by the absence of relationship between settler communities and Indigenous peoples. That gap cannot be closed by reading, by attending one event, or by signing one petition.</p>
+        <p>It can only be closed by closing the distance. Sustained, ongoing, reciprocal relationship is not the nice outcome at the end of the process — it is the actual process. Every meaningful shift in understanding comes through relationship, not study.</p>
+        <div class="acc-example">The knowledge is right there. You have to get close enough, and stay long enough, to receive it.</div>
+      </div>
+    </div>
+
+    <div class="acc-item">
+      <button class="acc-trigger" onclick="toggleAcc(this)">
+        <span class="acc-num">3</span>
+        <span class="acc-label">Why your spiritual integrity requires this</span>
+        <i class="ti ti-chevron-down acc-chevron" aria-hidden="true"></i>
+      </button>
+      <div class="acc-body">
+        <p>If you hold — in any tradition — that every person carries something sacred, then the structures that have systematically denied that sacredness to Indigenous peoples are your concern. Not your charity. Your concern.</p>
+        <p>Charity flows downward from security. Concern flows from recognition: what happened to your neighbor diminished something in you too. One keeps the distance. The other closes it.</p>
+        <p>For those who don't use this language: call it moral integrity, accountability, the recognition that your community's history has costs still being paid by other people. The logic holds regardless of tradition. What is required is the same.</p>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- TAB 2 -->
+<div class="section" id="tab-principles">
+  <div class="section-intro">These five principles are how you show up without making your presence the work.</div>
+  <div class="accordion">
+
+    <div class="acc-item open">
+      <button class="acc-trigger" onclick="toggleAcc(this)">
+        <span class="acc-num">1</span>
+        <span class="acc-label">Do your homework before you arrive</span>
+        <i class="ti ti-chevron-down acc-chevron" aria-hidden="true"></i>
+      </button>
+      <div class="acc-body">
+        <p>Indigenous-led organizations have public materials, websites, and published writing. Read them. The burden of basic education should fall on you, before you walk in the door — not on the people building something who have to stop and explain settler-colonialism for the hundredth time.</p>
+        <p>Questions that emerge from shared experience over time are different from questions that come from starting at zero. Arrive knowing the history. Show up ready to work.</p>
+        <div class="acc-example">Before your first Hub work week: read GPAS's public materials, read the Decolonial Repair Network's resources, read what non-Native accomplices who've been at this longer have already written. Then show up.</div>
+      </div>
+    </div>
+
+    <div class="acc-item">
+      <button class="acc-trigger" onclick="toggleAcc(this)">
+        <span class="acc-num">2</span>
+        <span class="acc-label">Let the work be the relationship</span>
+        <i class="ti ti-chevron-down acc-chevron" aria-hidden="true"></i>
+      </button>
+      <div class="acc-body">
+        <p>At a work week, you are there to dig, carry, and build — not to ask questions about Indigenous history or spirituality. The relationship that develops through shared physical labor over time is fundamentally different from an extractive educational relationship.</p>
+        <p>Trust earned through years of showing up and being useful creates a different kind of conversation than arriving with a list of things you want to understand. The learning happens as a byproduct of service, not as the purpose of showing up.</p>
+        <div class="acc-example">In September 2018, Jeff Kisling walked 94 miles across Iowa over eight days with Native and non-Native people. By the end, he understood things about the land he had lived on his whole life that fifty years of reading hadn't given him — not from questions asked, but from days of walking together.</div>
+      </div>
+    </div>
+
+    <div class="acc-item">
+      <button class="acc-trigger" onclick="toggleAcc(this)">
+        <span class="acc-num">3</span>
+        <span class="acc-label">Learn from other accomplices</span>
+        <i class="ti ti-chevron-down acc-chevron" aria-hidden="true"></i>
+      </button>
+      <div class="acc-body">
+        <p>This is a significant part of what the Decolonial Repair Network is for. Monthly meetings where non-Native people process, learn, and prepare together. The educational work for non-Natives can be done largely by other non-Natives who are further along in this work.</p>
+        <p>Non-Native accomplices who have been at this for years have already processed many of the questions you'll arrive with. Use those relationships. Indigenous leadership shouldn't have to be the teacher every time.</p>
+        <div class="acc-example">DRN monthly meetings are where you bring your questions, your discomfort, your confusion — not to the Hub, where the work is the work.</div>
+      </div>
+    </div>
+
+    <div class="acc-item">
+      <button class="acc-trigger" onclick="toggleAcc(this)">
+        <span class="acc-num">4</span>
+        <span class="acc-label">Ask "what do you need?" not "what can I learn?"</span>
+        <i class="ti ti-chevron-down acc-chevron" aria-hidden="true"></i>
+      </button>
+      <div class="acc-body">
+        <p>The posture shift from ally to accomplice is visible in how you frame your presence. An ally centers their own learning and growth. An accomplice centers what the work requires.</p>
+        <p>You ask what is needed. You do it. You don't reshape the task to fit your schedule or comfort level. You don't add yourself to projects where you haven't been invited. You follow Indigenous direction — especially when it's different from what you would have done.</p>
+        <div class="acc-example">Not: "I'd love to learn more about Traditional Ecological Knowledge." Instead: "What needs doing this week, and what can I carry?"</div>
+      </div>
+    </div>
+
+    <div class="acc-item">
+      <button class="acc-trigger" onclick="toggleAcc(this)">
+        <span class="acc-num">5</span>
+        <span class="acc-label">Trust takes time — and that's appropriate</span>
+        <i class="ti ti-chevron-down acc-chevron" aria-hidden="true"></i>
+      </button>
+      <div class="acc-body">
+        <p>The depth of exchange that develops over years of showing up is built on the foundation of years of showing up. An accomplice who wants that depth immediately is still centered on themselves.</p>
+        <p>Jeff Kisling's relationship with Sikowis Nobiss, founder of the Great Plains Action Society, developed over nearly a decade of showing up and being useful. That kind of trust is earned — and it changes what becomes possible. It is not a shortcut you can take.</p>
+        <div class="acc-example">Keep coming back. The sustained presence is the point. Showing up once is meaningful. Showing up every time you're asked, over years, is something different.</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- TAB 3 -->
+<div class="section" id="tab-start">
+  <div class="section-intro">The Hub and the DRN are not unique — they are a model. What they demonstrate is replicable in any region.</div>
+
+  <p class="section-h2">In Iowa City</p>
+  <div class="card-grid">
+    <div class="card">
+      <i class="ti ti-plant card-icon" aria-hidden="true"></i>
+      <h3>Urban Resilience Hub</h3>
+      <p>Work weeks at the Great Plains Action Society's Hub in downtown Iowa City. Physical labor, Indigenous leadership, specific asks. Open to non-Native participants.</p>
+      <a href="https://greatplainsaction.org" target="_blank">greatplainsaction.org <i class="ti ti-external-link" style="font-size:12px" aria-hidden="true"></i></a>
+    </div>
+    <div class="card">
+      <i class="ti ti-users card-icon" aria-hidden="true"></i>
+      <h3>Decolonial Repair Network</h3>
+      <p>Monthly online meetings for non-Native people to support GPAS and learn from each other — so Indigenous leadership isn't doing the educational work alone.</p>
+      <a href="https://decolonialrepairnetwork.blog" target="_blank">decolonialrepairnetwork.blog <i class="ti ti-external-link" style="font-size:12px" aria-hidden="true"></i></a>
+    </div>
+  </div>
+
+  <p class="section-h2">Wherever you are</p>
+  <div class="card-grid">
+    <div class="card">
+      <i class="ti ti-map-pin card-icon" aria-hidden="true"></i>
+      <h3>Find who is near you</h3>
+      <p>Every region has Indigenous-led organizations doing this work. The question is not whether they exist — it's whether you will find them and ask what they need.</p>
+      <a href="https://native-land.ca" target="_blank">native-land.ca — whose land? <i class="ti ti-external-link" style="font-size:12px" aria-hidden="true"></i></a>
+    </div>
+    <div class="card">
+      <i class="ti ti-book card-icon" aria-hidden="true"></i>
+      <h3>Start with reading</h3>
+      <p>GPAS's public materials, Jeff Kisling's writing, and the DRN website are all starting places before you walk through any door.</p>
+      <a href="https://activeobjection.substack.com" target="_blank">activeobjection.substack.com <i class="ti ti-external-link" style="font-size:12px" aria-hidden="true"></i></a>
+    </div>
+  </div>
+
+  <div class="callout">
+    The Hub in Iowa City is not the only such place. What it models — Indigenous-led, community-rooted, open to non-Native support on Indigenous terms — is replicable. Finding the equivalent in your region and asking what they need is where this work begins.
+  </div>
+</div>
+
+<!-- TAB 4 -->
+<div class="section" id="tab-reflect">
+  <div class="section-intro">These questions are not meant to produce guilt. They are meant to produce honesty — which is the precondition for change.</div>
+
+  <div class="ref-list">
+
+    <div class="ref-item open">
+      <button class="ref-trigger" onclick="toggleRef(this)">
+        <span class="ref-icon"><i class="ti ti-question-mark" aria-hidden="true"></i></span>
+        <span class="ref-q">When you imagine showing up, what do you imagine doing?</span>
+        <i class="ti ti-chevron-down ref-chevron" aria-hidden="true"></i>
+      </button>
+      <div class="ref-body">
+        <p>If you imagine listening, learning, asking questions, and being moved — that is the ally posture. It centers your own experience.</p>
+        <p>If you imagine doing physical work, following direction, carrying what needs carrying, and coming back next time — that is closer to accomplice. The shift is from receiving to serving.</p>
+      </div>
+    </div>
+
+    <div class="ref-item">
+      <button class="ref-trigger" onclick="toggleRef(this)">
+        <span class="ref-icon"><i class="ti ti-question-mark" aria-hidden="true"></i></span>
+        <span class="ref-q">Are you building sustained relationship, or seeking a meaningful one-time experience?</span>
+        <i class="ti ti-chevron-down ref-chevron" aria-hidden="true"></i>
+      </button>
+      <div class="ref-body">
+        <p>One-time engagement is not nothing. But the repair that is needed — and the learning that changes you — happens through sustained presence over time. Not one work week, but every work week you're able to make.</p>
+        <p>The honest question is whether you are building the kind of relationship that will still be there in five years. That requires a different level of commitment than showing up once when you feel motivated.</p>
+      </div>
+    </div>
+
+    <div class="ref-item">
+      <button class="ref-trigger" onclick="toggleRef(this)">
+        <span class="ref-icon"><i class="ti ti-question-mark" aria-hidden="true"></i></span>
+        <span class="ref-q">What would you have to rearrange to keep coming back?</span>
+        <i class="ti ti-chevron-down ref-chevron" aria-hidden="true"></i>
+      </button>
+      <div class="ref-body">
+        <p>Accomplice-ship has costs. Not dramatic ones — but real ones: time, scheduling, the comfort of staying in your own community's work. The question of what you are willing to rearrange is a question about what this actually means to you.</p>
+        <p>The gap in our formation was created by the absence of relationships that cost something to build. The repair requires building them.</p>
+      </div>
+    </div>
+
+    <div class="ref-item">
+      <button class="ref-trigger" onclick="toggleRef(this)">
+        <span class="ref-icon"><i class="ti ti-question-mark" aria-hidden="true"></i></span>
+        <span class="ref-q">Whose land are you on right now — and do you know who was there before?</span>
+        <i class="ti ti-chevron-down ref-chevron" aria-hidden="true"></i>
+      </button>
+      <div class="ref-body">
+        <p>This is a starting question, not an ending one. But it matters. If you don't know the answer, finding out is the first act of relationship-building — learning the name of the people whose ground you inhabit.</p>
+        <p>Native Land Digital (native-land.ca) is a starting point. That knowledge doesn't create obligation by itself — but it opens the question of what obligation might follow.</p>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<div class="page-footer">
+  Jeff Kisling &nbsp;·&nbsp;
+  <a href="https://activeobjection.substack.com">activeobjection.substack.com</a> &nbsp;·&nbsp;
+  <a href="https://decolonialrepairnetwork.blog">Decolonial Repair Network</a> &nbsp;·&nbsp;
+  <a href="https://greatplainsaction.org">Great Plains Action Society</a>
+</div>
+
+<script>
+function showTab(name, btn) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+  document.getElementById('tab-' + name).classList.add('active');
+  btn.classList.add('active');
+}
+function toggleAcc(trigger) {
+  trigger.closest('.acc-item').classList.toggle('open');
+}
+function toggleRef(trigger) {
+  trigger.closest('.ref-item').classList.toggle('open');
+}
+</script>
+</body>
+</html>
